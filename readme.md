@@ -1,38 +1,51 @@
-# Documantion
-1. Requirements and Database Design
-1.1 Expanding Customer Base
-•	Goal: Develop a web shop application to reach a broader customer base.
-1.2 Database Design
-•	Tables:
-o	users (id, username, password, email, role)
-o	products (id, name, description, price, image)
-o	orders (id, user_id, total_price, created_at)
-o	order_items (id, order_id, product_id, quantity, price)
-1.3 Time Estimation
-•	Planning and Design: 2 days
-•	Database Design: 1 day
-•	Function Implementation: 5 days
-•	Testing and Debugging: 2 days
-•	Documentation: 1 day
-•	Total: approx. 11 days
-2. Sketch and GUI Design
-•	Sketch: Draw a simple user interface for the web shop.
-•	GUI: Simple, user-friendly design without absolute positioning.
-3. Product Listing and Management
-•	List of products with name, image, and price.
-•	Detailed view of a product with all properties.
-4. Admin Area
-•	Admin login-logout.
-•	CRUD (Create, Read, Update, Delete) operations for products.
-•	Statistics on the most and least sold products.
-5. Security Measures
-•	Prevent SQL injection using prepared statements.
-•	Password hashing (e.g., with password_hash).
-•	Session management for admin login.
-•	Do not use root in the database, create a new user.
+# Documentation
 
+## 1. Requirements and Database Design
 
-## users Table
+### 1.1 Expanding Customer Base
+- **Goal**: Develop a web shop application to reach a broader customer base.
+
+### 1.2 Database Design
+- **Tables**:
+  - `users` (id, username, password, email, role)
+  - `products` (id, name, description, price, image)
+  - `orders` (id, user_id, total_price, created_at)
+  - `order_items` (id, order_id, product_id, quantity, price)
+
+### 1.3 Time Estimation
+- **Planning and Design**: 2 days
+- **Database Design**: 1 day
+- **Function Implementation**: 5 days
+- **Testing and Debugging**: 2 days
+- **Documentation**: 1 day
+- **Total**: approx. 11 days
+
+## 2. Sketch and GUI Design
+- **Sketch**: Draw a simple user interface for the web shop.
+- **GUI**: Simple, user-friendly design without absolute positioning.
+
+## 3. Product Listing and Management
+- **Features**:
+  - List of products with name, image, and price.
+  - Detailed view of a product with all properties.
+
+## 4. Admin Area
+- **Features**:
+  - Admin login/logout.
+  - CRUD (Create, Read, Update, Delete) operations for products.
+  - Statistics on the most and least sold products.
+
+## 5. Security Measures
+- **Measures**:
+  - Prevent SQL injection using prepared statements.
+  - Password hashing (e.g., with `password_hash`).
+  - Session management for admin login.
+  - Do not use root in the database; create a new user.
+
+## Database Schema
+
+### `users` Table
+```sql
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -40,9 +53,12 @@ CREATE TABLE users (
     firstname VARCHAR(50) NOT NULL,
     lastname VARCHAR(50) NOT NULL,
     role ENUM('customer', 'admin') NOT NULL DEFAULT 'customer',
-    createdat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-## products Table
+```
+
+### `products` Table
+```sql
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -50,7 +66,10 @@ CREATE TABLE products (
     price DECIMAL(10, 2) NOT NULL,
     image_url VARCHAR(255)
 );
-## orders Table
+```
+
+### `orders` Table
+```sql
 CREATE TABLE orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -59,8 +78,11 @@ CREATE TABLE orders (
     total_amount DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
-Relationship: One user (user_id) can have multiple orders (orders).
-## order_items Table
+```
+- **Relationship**: One user (user_id) can have multiple orders.
+
+### `order_items` Table
+```sql
 CREATE TABLE order_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
@@ -72,9 +94,11 @@ CREATE TABLE order_items (
     FOREIGN KEY (product_id) REFERENCES products(id),
     FOREIGN KEY (address_id) REFERENCES addresses(id)
 );
-Relationship: Each order (order_id) can contain multiple order items (order_items).
+```
+- **Relationship**: Each order (order_id) can contain multiple order items.
 
-## addresses Table
+### `addresses` Table
+```sql
 CREATE TABLE addresses (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -86,10 +110,11 @@ CREATE TABLE addresses (
     country VARCHAR(100) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
-Relationship: Each user (user_id) can have multiple addresses (addresses), differentiated by type (billing or shipping).
+```
+- **Relationship**: Each user (user_id) can have multiple addresses, differentiated by type (billing or shipping).
 
-##  cart Table Schema
-
+### `cart` Table
+```sql
 CREATE TABLE cart (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -99,3 +124,4 @@ CREATE TABLE cart (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
+```

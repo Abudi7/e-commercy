@@ -2,18 +2,31 @@
 
 require_once 'Database.php'; // Adjust path as per your file structure
 
+/**
+ * Class Order
+ * Handles operations related to orders such as fetching orders for a specific user.
+ */
 class Order
 {
+    /** @var mysqli $conn The mysqli database connection object. */
     private $conn;
 
+    /**
+     * Order constructor.
+     * Initializes the Database connection.
+     */
     public function __construct()
     {
         $db = new Database();
         $this->conn = $db->getConnection();
     }
 
-  
-    // Fetch all orders for a specific user
+    /**
+     * Fetch all orders for a specific user.
+     *
+     * @param int $userId The ID of the user.
+     * @return array An array of orders, each containing order details and associated items.
+     */
     public function getOrdersByUser($userId)
     {
         $stmt = $this->conn->prepare("
@@ -49,5 +62,5 @@ class Order
         $stmt->close();
         return array_values($orders); // Convert associative array to indexed array
     }
-  }
+}
 ?>

@@ -1,17 +1,30 @@
 <?php
 
-require_once 'Database.php'; 
+require_once 'Database.php';
 
+/**
+ * Class Statistics
+ * Handles the retrieval of various statistical data related to products and orders.
+ */
 class Statistics
 {
+    /** @var mysqli $conn The mysqli database connection object. */
     private $conn;
 
+    /**
+     * Statistics constructor.
+     * Initializes the Database connection.
+     */
     public function __construct() {
         $db = new Database();
         $this->conn = $db->getConnection();
     }
 
-    // Get the five least ordered products
+    /**
+     * Retrieves the five least ordered products.
+     *
+     * @return array An associative array of the least ordered products and their order counts.
+     */
     public function getLeastOrderedProducts()
     {
         $stmt = $this->conn->prepare("
@@ -30,7 +43,11 @@ class Statistics
         return $products;
     }
 
-    // Get order history over the last four weeks
+    /**
+     * Retrieves the order history over the last four weeks.
+     *
+     * @return array An associative array of the order history, grouped by date.
+     */
     public function getOrderHistoryLastFourWeeks()
     {
         $stmt = $this->conn->prepare("
@@ -48,7 +65,11 @@ class Statistics
         return $orderHistory;
     }
 
-    // Get the five most ordered products
+    /**
+     * Retrieves the five most ordered products.
+     *
+     * @return array An associative array of the most ordered products and their order counts.
+     */
     public function getMostOrderedProducts()
     {
         $stmt = $this->conn->prepare("
@@ -67,5 +88,4 @@ class Statistics
         return $products;
     }
 }
-
 ?>
