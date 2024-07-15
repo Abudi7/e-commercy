@@ -26,6 +26,7 @@
         <div id="navigation-bar" class="nav-bar">
             <a href="http://localhost:8451/index.php" class="active">Home</a>
             <a href="http://localhost:8451/cart/index.php">Cart</a>
+            <a href="http://localhost:8451/layout/admin/statistics/">Statistics</a>
             <a href="http://localhost:8451/layout/admin/products/">Products</a>
             <?php 
             

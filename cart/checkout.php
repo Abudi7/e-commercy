@@ -1,9 +1,11 @@
-<?php 
+<?php
 require '../layout/template/header.php';
 require '../Class/Database.php'; 
 session_start(); // Ensure the session is started
 $userId = $_SESSION['id']; // Fetch user ID from session
 $cartId = $_GET['id'];
+
+// Database connection
 $conn = new Database();
 $conn = $conn->getConnection();
 
@@ -51,86 +53,97 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $addressLine1 = htmlspecialchars($_POST['address_line1']);
-  $addressLine2 = htmlspecialchars($_POST['address_line2']);
-  $city = htmlspecialchars($_POST['city']);
-  $postalCode = htmlspecialchars($_POST['postal_code']);
-  $country = htmlspecialchars($_POST['country']);
+    // Validate and process address information
+    $addressLine1 = htmlspecialchars($_POST['address_line1']);
+    $addressLine2 = htmlspecialchars($_POST['address_line2']);
+    $city = htmlspecialchars($_POST['city']);
+    $postalCode = htmlspecialchars($_POST['postal_code']);
+    $country = htmlspecialchars($_POST['country']);
 
-  // Validate address inputs
-  if (empty($addressLine1)) {
-      $errors[] = "Address Line 1 is required.";
-  }
-  if (empty($city)) {
-      $errors[] = "City is required.";
-  }
-  if (empty($postalCode)) {
-      $errors[] = "Postal Code is required.";
-  }
-  if (empty($country)) {
-      $errors[] = "Country is required.";
-  }
-
-  // Proceed if no validation errors
-  if (empty($errors)) {
-      
-    // Start transaction
-    $conn->begin_transaction();
-
-    try {
-        // Insert into orders table
-        $stmt = $conn->prepare("INSERT INTO orders (user_id, total_amount) VALUES (?, ?)");
-        $stmt->bind_param("id", $userId, $totalAmount);
-        $stmt->execute();
-        $orderId = $stmt->insert_id;
-        $stmt->close();
-
-        // Insert into addresses table
-        $stmt = $conn->prepare("INSERT INTO addresses (user_id, type, address_line1, address_line2, city, postal_code, country) VALUES (?, 'shipping', ?, ?, ?, ?, ?)");
-        $stmt->bind_param("isssss", $userId, $addressLine1, $addressLine2, $city, $postalCode, $country);
-        $stmt->execute();
-        $addressId = $stmt->insert_id;
-        $stmt->close();
-
-        // Insert into order_items table
-        $stmt = $conn->prepare("INSERT INTO order_items (order_id, product_id, quantity, unit_price, address_id) VALUES (?, ?, ?, ?, ?)");
-        foreach ($products as $product) {
-            $productId = $product['product_id'];
-            $quantity = $product['quantity'];
-            $unitPrice = $product['unit_price'];
-            $stmt->bind_param("iiidi", $orderId, $productId, $quantity, $unitPrice, $addressId);
-            $stmt->execute();
-        }
-        $stmt->close();
-
-        // Remove items from cart
-        $stmt = $conn->prepare("DELETE FROM cart WHERE id = ? AND user_id = ?");
-        $stmt->bind_param("ii", $cartId, $userId);
-        $stmt->execute();
-        $stmt->close();
-
-        // Commit transaction
-        $conn->commit();
-
-        // Generate invoice number
-        $invoiceNumber = generateInvoiceNumber($orderId);
-
-        // Send invoice email
-        $orderDetails = "Invoice Number: $invoiceNumber\nOrder ID: $orderId\nTotal Amount: $totalAmount\n";
-        // Add more order details as needed
-        sendInvoiceEmail($_POST['email'], $invoiceNumber, $orderDetails);
-        
-        // Success message
-        echo '<div style="text-align: center; margin-top: 20px; background-color: #d4edda; color: #155724; border-color: #c3e6cb; border-radius: .25rem; padding: 10px;">';
-        echo "Order successfully placed! Your invoice number is: $invoiceNumber";
-        echo '</div>';
-        //header('Location: ../order/index.php');
-    } catch (Exception $e) {
-        $conn->rollback();
-        echo "Failed to place order: " . $e->getMessage();
+    // Validate address inputs
+    $errors = [];
+    if (empty($addressLine1)) {
+        $errors[] = "Address Line 1 is required.";
     }
-  }
+    if (empty($city)) {
+        $errors[] = "City is required.";
+    }
+    if (empty($postalCode)) {
+        $errors[] = "Postal Code is required.";
+    }
+    if (empty($country)) {
+        $errors[] = "Country is required.";
+    }
+
+    // Proceed if no validation errors
+    if (empty($errors)) {
+        // Start database transaction
+        $conn->begin_transaction();
+
+        try {
+            // Insert into orders table
+            $stmt = $conn->prepare("INSERT INTO orders (user_id, total_amount) VALUES (?, ?)");
+            $stmt->bind_param("id", $userId, $totalAmount);
+            $stmt->execute();
+            $orderId = $stmt->insert_id;
+            $stmt->close();
+
+            // Insert into addresses table
+            $stmt = $conn->prepare("INSERT INTO addresses (user_id, type, address_line1, address_line2, city, postal_code, country) VALUES (?, 'shipping', ?, ?, ?, ?, ?)");
+            $stmt->bind_param("isssss", $userId, $addressLine1, $addressLine2, $city, $postalCode, $country);
+            $stmt->execute();
+            $addressId = $stmt->insert_id;
+            $stmt->close();
+
+            // Insert into order_items table
+            $stmt = $conn->prepare("INSERT INTO order_items (order_id, product_id, quantity, unit_price, address_id) VALUES (?, ?, ?, ?, ?)");
+            foreach ($products as $product) {
+                $productId = $product['product_id'];
+                $quantity = $product['quantity'];
+                $unitPrice = $product['unit_price'];
+                $stmt->bind_param("iiidi", $orderId, $productId, $quantity, $unitPrice, $addressId);
+                $stmt->execute();
+            }
+            $stmt->close();
+
+            // Delete items from cart
+            $stmt = $conn->prepare("DELETE FROM cart WHERE id = ? AND user_id = ?");
+            $stmt->bind_param("ii", $cartId, $userId);
+            $stmt->execute();
+            $stmt->close();
+
+            // Commit transaction
+            $conn->commit();
+
+            // Generate invoice number
+            $invoiceNumber = generateInvoiceNumber($orderId);
+
+            // Send invoice email
+            $orderDetails = "Invoice Number: $invoiceNumber\nOrder ID: $orderId\nTotal Amount: $totalAmount\n";
+            // Additional order details can be added here
+            sendInvoiceEmail($_POST['email'], $invoiceNumber, $orderDetails);
+            
+            // Display success message
+            echo '<div style="text-align: center; margin-top: 20px; background-color: #d4edda; color: #155724; border-color: #c3e6cb; border-radius: .25rem; padding: 10px;">';
+            echo "Order successfully placed! Your invoice number is: $invoiceNumber";
+            echo '</div>';
+            // Redirect to homepage after 2 seconds
+            echo '<meta http-equiv="refresh" content="2;url=../index.php">';
+            // Redirect to order confirmation page if needed
+            // header('Location: ../order/index.php');
+        } catch (Exception $e) {
+            // Rollback transaction on failure
+            $conn->rollback();
+            echo "Failed to place order: " . $e->getMessage();
+        }
+    } else {
+        // Display validation errors
+        foreach ($errors as $error) {
+            echo '<div style="color: red;">' . $error . '</div>';
+        }
+    }
 }
 ?>
 

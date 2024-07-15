@@ -1,28 +1,27 @@
 <?php
-if($_SESSION['role' == 'admin']) {
-  require('../../template/headerAdmin.php');
+session_start();
 
+if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
+    require_once('../../template/headerAdmin.php'); 
+    require_once('../../../Class/Products.php'); 
 
-require('../../../Class/Products.php');
+    $product = new Products();
 
-$product = new Products();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create'])) {
+        $name = htmlspecialchars(trim($_POST['name']));
+        $description = htmlspecialchars(trim($_POST['description']));
+        $price = (float)$_POST['price'];
+        $image = '';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create'])) {
-    $name = htmlspecialchars(trim($_POST['name']));
-    $description = htmlspecialchars(trim($_POST['description']));
-    $price = (float)$_POST['price'];
-    $image = '';
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+            $image = basename($_FILES['image']['name']);
+            $target = "image/" . $image;
+            move_uploaded_file($_FILES['image']['tmp_name'], $target);
+        }
 
-    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $image = basename($_FILES['image']['name']);
-        $target = "image/" . $image;
-        move_uploaded_file($_FILES['image']['tmp_name'], $target);
+        $product->create($name, $description, $price, $image);
+        header('Location: index.php');
     }
-
-    $product->create($name, $description, $price, $image);
-    header('Location: index.php');
-}
-
 ?>
     <div class="container">
         <h2>Manage Products</h2>
@@ -67,13 +66,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create'])) {
                     echo "<td>{$row['id']}</td>";
                     echo "<td>{$row['name']}</td>";
                     $description =  implode(' ', array_slice(str_word_count($row['description'], 2), 0, 5));
-                    echo "<td>"; echo $description ; echo "</td>";
+                    echo "<td>{$description}</td>";
                     echo "<td>\${$row['price']}</td>";
                     echo "<td><img src='image/{$row['image']}' alt='{$row['name']}' width='50'></td>";
                     echo "<td>
-                            <button class='btn'><a style='text-decoration: none; color: aliceblue;' href='productView.php?id={$row['id']}'>Edit</a></button> |
+                            <button class='btn'><a style='text-decoration: none; color: aliceblue;' href='../../../Product/index.php?id={$row['id']}'>View</a></button> |
                             <button class='btn'><a style='text-decoration: none; color: aliceblue;' href='productEdit.php?id={$row['id']}'>Edit</a></button> |
-                            <button class='btn'><a style='text-decoration: none; color: aliceblue;' href='productDelete.php?id={$row['id']}' onclick='return confirm('Are you sure you want to delete this record?') >Delete</a></button>
+                            <button class='btn'><a style='text-decoration: none; color: aliceblue;' href='productDelete.php?id={$row['id']}' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</a></button>
                           </td>";
                     echo "</tr>";
                 }
@@ -82,8 +81,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create'])) {
         </table>
     </div>
 
-<?php require '../../template/footer.php'; }else {
-  require '../../template/header.php';
-  //redirect to Home Page
-  header('Location: ../../../index.php');
-}?>
+<?php 
+    require_once('../../template/footer.php'); 
+} else {
+    // If not admin, redirect to index.php or another appropriate page
+    header('Location: ../../../index.php');
+    exit;
+}
+?>

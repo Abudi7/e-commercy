@@ -1,6 +1,5 @@
 <?php
 require '../Class/Cart.php';
-session_start(); // Ensure session is started
 require '../layout/template/header.php';
 
 $userId = $_SESSION['id']; 
@@ -86,7 +85,7 @@ $userId = $_SESSION['id'];
                         </div>
                    <?php }
                 } else {
-                    echo '<p>No items in the cart.</p>';
+                  echo '<p>No items in the cart. Return to Home Shop <a href="../index.php" class="remove-item">Home-Shop</a></p>';
                 }
             ?>
         </div>
