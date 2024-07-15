@@ -1,3 +1,37 @@
+# Documantion
+1. Requirements and Database Design
+1.1 Expanding Customer Base
+•	Goal: Develop a web shop application to reach a broader customer base.
+1.2 Database Design
+•	Tables:
+o	users (id, username, password, email, role)
+o	products (id, name, description, price, image)
+o	orders (id, user_id, total_price, created_at)
+o	order_items (id, order_id, product_id, quantity, price)
+1.3 Time Estimation
+•	Planning and Design: 2 days
+•	Database Design: 1 day
+•	Function Implementation: 5 days
+•	Testing and Debugging: 2 days
+•	Documentation: 1 day
+•	Total: approx. 11 days
+2. Sketch and GUI Design
+•	Sketch: Draw a simple user interface for the web shop.
+•	GUI: Simple, user-friendly design without absolute positioning.
+3. Product Listing and Management
+•	List of products with name, image, and price.
+•	Detailed view of a product with all properties.
+4. Admin Area
+•	Admin login-logout.
+•	CRUD (Create, Read, Update, Delete) operations for products.
+•	Statistics on the most and least sold products.
+5. Security Measures
+•	Prevent SQL injection using prepared statements.
+•	Password hashing (e.g., with password_hash).
+•	Session management for admin login.
+•	Do not use root in the database, create a new user.
+
+
 ## users Table
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
