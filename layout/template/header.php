@@ -22,7 +22,6 @@
         <a id="menu-icon" class="menu-icon" onclick="onMenuClick()">
             <i class="fas fa-bars"></i>
         </a>
-
         <div id="navigation-bar" class="nav-bar">
             <a href="http://localhost:8451/" class="active">Home</a>
             <a href="#">Order</a>
@@ -30,7 +29,7 @@
             
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true){
               echo '<a href="#">Welcome, '; echo htmlspecialchars($_SESSION['firstname'] . ' ' . $_SESSION['lastname']); echo '</a>';  
-              echo '<a href="logout.php">Logout</a>';
+              echo '<a href="../../logout/">Logout</a>';
             }else{
               echo'<a href="http://localhost:8451/login">Signin</a>';
             }    

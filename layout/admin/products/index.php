@@ -1,5 +1,8 @@
-<?php 
-require('../../template/headerAdmin.php');
+<?php
+if($_SESSION['role' == 'admin']) {
+  require('../../template/headerAdmin.php');
+
+
 require('../../../Class/Products.php');
 
 $product = new Products();
@@ -68,8 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create'])) {
                     echo "<td>\${$row['price']}</td>";
                     echo "<td><img src='image/{$row['image']}' alt='{$row['name']}' width='50'></td>";
                     echo "<td>
-                            <a href='productEdit.php?id={$row['id']}'>Edit</a> |
-                            <a href='productDelete.php?id={$row['id']}'>Delete</a>
+                            <button class='btn'><a style='text-decoration: none; color: aliceblue;' href='productView.php?id={$row['id']}'>Edit</a></button> |
+                            <button class='btn'><a style='text-decoration: none; color: aliceblue;' href='productEdit.php?id={$row['id']}'>Edit</a></button> |
+                            <button class='btn'><a style='text-decoration: none; color: aliceblue;' href='productDelete.php?id={$row['id']}' onclick='return confirm('Are you sure you want to delete this record?') >Delete</a></button>
                           </td>";
                     echo "</tr>";
                 }
@@ -78,4 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create'])) {
         </table>
     </div>
 
-<?php require '../../template/footer.php'; ?>
+<?php require '../../template/footer.php'; }else {
+  require '../../template/header.php';
+  //redirect to Home Page
+  header('Location: ../../../index.php');
+}?>

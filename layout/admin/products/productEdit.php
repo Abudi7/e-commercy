@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
             </div>
             <button type="submit" name="update" class="btn">Update Product</button>
             <!-- Button with onclick event to navigate back -->
-            <button class="btn" onclick="goBack()">Back</button>
+            <button class="btn"><a href="index.php" style="text-decoration: none; color: aliceblue;">Back</a></button>
         </form>
     </div>
 

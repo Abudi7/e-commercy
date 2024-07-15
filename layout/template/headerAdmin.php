@@ -30,7 +30,7 @@
             
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true){
               echo '<a href="#">Admin '; echo htmlspecialchars( $_SESSION['lastname']); echo '</a>';  
-              echo '<a href="logout.php">Logout</a>';
+              echo '<a href="../../logout/">Logout</a>';
             }else{
               echo'<a href="http://localhost:8451/login">Signin</a>';
             }    
