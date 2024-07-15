@@ -252,7 +252,51 @@ h2 {
 .back-button a:hover {
   background-color: #0b59b6;
 }
+/* Define your CSS styles for cart items */
+.cart-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
+.cart-item {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-item .product-name {
+  font-weight: bold;
+}
+
+.cart-item .product-price {
+  margin-left: 10px;
+}
+
+.cart-item .product-quantity {
+  margin-left: 10px;
+}
+
+.remove-item {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.remove-item:hover {
+  background-color: #c82333;
+}
 /* Footer style */
 .footer {
   text-align: center;

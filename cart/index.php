@@ -82,6 +82,7 @@ $userId = $_SESSION['id'];
                             </form>
                             <span class="total-price">$<?php echo $result = number_format($item['price'], 2) * htmlspecialchars($item['quantity']); ?></span>
                             <a href="deleteCart.php?id=<?php echo htmlspecialchars($item['id']); ?>" class="remove-item" data-cart-id="<?php echo htmlspecialchars($item['id']); ?>">Remove</a>
+                            <a href="checkout.php?id=<?=$item['id'];?>" class="remove-item" data-cart-id="<?php echo htmlspecialchars($item['id']); ?>">Checkout</a>
                         </div>
                    <?php }
                 } else {

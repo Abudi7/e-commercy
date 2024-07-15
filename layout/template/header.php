@@ -24,7 +24,8 @@
         </a>
         <div id="navigation-bar" class="nav-bar">
             <a href="http://localhost:8451/" class="active">Home</a>
-            <a href="#">Order</a>
+            <a href="http://localhost:8451/order/index.php">Order</a>
+            <a href="http://localhost:8451/cart/index.php">Cart</a>
             <?php 
             
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true){
