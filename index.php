@@ -165,7 +165,7 @@ $products = $product->read();
           <p class="card-price">Price: $<?= number_format($product['price'], 2); ?></p>
         </div>
         <div class="card-footer">
-          <a href="#" class="btn">Buy Now</a>
+          <a href="cart/addToCart.php?id=<?= $product['id'];?>" class="btn">Buy Now</a>
         </div>
       </div>
     <?php endforeach; ?>

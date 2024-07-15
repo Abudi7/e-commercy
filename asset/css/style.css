@@ -227,7 +227,44 @@ h2 {
 .back-button a:hover {
   background-color: #0b59b6;
 }
+/* Basic styling for cart items */
+.cart-container {
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
+.cart-items {
+  margin-top: 20px;
+}
+
+.cart-item {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.item-details {
+  flex: 2;
+}
+
+.item-actions {
+  flex: 1;
+  text-align: right;
+}
+
+.item-actions a {
+  color: #cc0000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.item-actions a:hover {
+  text-decoration: underline;
+}
 /* Footer section */
 .footer {
   text-align: center;
