@@ -11,6 +11,7 @@
   - `products` (id, name, description, price, image)
   - `orders` (id, user_id, total_price, created_at)
   - `order_items` (id, order_id, product_id, quantity, price)
+  - `cart` (id, user_id, product_id,quantity, created_at)
 
 ### 1.3 Time Estimation
 - **Planning and Design**: 2 days
@@ -64,7 +65,7 @@ CREATE TABLE products (
     name VARCHAR(100) NOT NULL,
     description TEXT,
     price DECIMAL(10, 2) NOT NULL,
-    image_url VARCHAR(255)
+    image VARCHAR(255)
 );
 ```
 
