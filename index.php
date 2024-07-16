@@ -165,7 +165,10 @@ $products = $product->read();
           <p class="card-price">Price: $<?= number_format($product['price'], 2); ?></p>
         </div>
         <div class="card-footer">
+          <!--If coustomer not Logged in -->
+          <?php if($_SESSION['loggedin']!== true ) {?><a href="login/index.php" class="btn">Buy Now</a><?php }else { ?>
           <a href="cart/addToCart.php?id=<?= $product['id'];?>" class="btn">Buy Now</a>
+          <?php } ?>
         </div>
       </div>
     <?php endforeach; ?>

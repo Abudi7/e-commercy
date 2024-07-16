@@ -100,7 +100,7 @@ if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
             <h3>Order History Last 4 Weeks</h3>
             <ul class="stats-list">
                 <?php foreach ($orderHistory as $history): ?>
-                    <li><?php echo htmlspecialchars($history['order_date']); ?> - <?php echo $history['order_count']; ?> orders</li>
+                    <li><?php echo htmlspecialchars($product['name']); ?> - <?php echo htmlspecialchars($history['order_date']); ?> - <?php echo $history['order_count']; ?> orders</li>
                 <?php endforeach; ?>
             </ul>
         </div>

@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message = $login->getMessage();
 }
 ?>
-    <div class="container">
+    <div class="container-register">
         <h2>User Login</h2>
         <form method="POST" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <div class="form-group">

@@ -70,9 +70,9 @@ if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
                     echo "<td>\${$row['price']}</td>";
                     echo "<td><img src='image/{$row['image']}' alt='{$row['name']}' width='50'></td>";
                     echo "<td>
-                            <button class='btn'><a style='text-decoration: none; color: aliceblue;' href='../../../Product/index.php?id={$row['id']}'>View</a></button> |
-                            <button class='btn'><a style='text-decoration: none; color: aliceblue;' href='productEdit.php?id={$row['id']}'>Edit</a></button> |
-                            <button class='btn'><a style='text-decoration: none; color: aliceblue;' href='productDelete.php?id={$row['id']}' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</a></button>
+                            <a style='text-decoration: none; color: #1a73e8;' href='../../../Product/index.php?id={$row['id']}'>View</a> |
+                            <a style='text-decoration: none; color: #1a73e8;' href='productEdit.php?id={$row['id']}'>Edit</a> |
+                            <a style='text-decoration: none; color: #1a73e8;' href='productDelete.php?id={$row['id']}' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</a>
                           </td>";
                     echo "</tr>";
                 }
